@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3175A2090C6746F6009D1C45 /* SetVolumeAttributes.c in Sources */ = {isa = PBXBuildFile; fileRef = 3175A2080C6746F6009D1C45 /* SetVolumeAttributes.c */; };
 		31F5C6C20C15A0870020F3F2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F5C6C10C15A0870020F3F2 /* AppDelegate.m */; };
 		31F5C6FB0C15ADF60020F3F2 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31F5C6FA0C15ADF60020F3F2 /* Carbon.framework */; };
 		31F5C9700C15BD440020F3F2 /* NSString+unsignedInt.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F5C96F0C15BD440020F3F2 /* NSString+unsignedInt.m */; };
@@ -24,6 +25,8 @@
 		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		3175A2070C6746F6009D1C45 /* SetVolumeAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetVolumeAttributes.h; sourceTree = "<group>"; };
+		3175A2080C6746F6009D1C45 /* SetVolumeAttributes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SetVolumeAttributes.c; sourceTree = "<group>"; };
 		31F5C6C00C15A0870020F3F2 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		31F5C6C10C15A0870020F3F2 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		31F5C6FA0C15ADF60020F3F2 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
@@ -52,6 +55,8 @@
 			children = (
 				31F5C6C00C15A0870020F3F2 /* AppDelegate.h */,
 				31F5C6C10C15A0870020F3F2 /* AppDelegate.m */,
+				3175A2070C6746F6009D1C45 /* SetVolumeAttributes.h */,
+				3175A2080C6746F6009D1C45 /* SetVolumeAttributes.c */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -189,6 +194,7 @@
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				31F5C6C20C15A0870020F3F2 /* AppDelegate.m in Sources */,
 				31F5C9700C15BD440020F3F2 /* NSString+unsignedInt.m in Sources */,
+				3175A2090C6746F6009D1C45 /* SetVolumeAttributes.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

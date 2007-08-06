@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 
+#include "SetVolumeAttributes.h"
+
 #define PREF_KEY_VOLUME_NAME @"Volume name"
 #define PREF_KEY_VOLUME_SIZE @"Volume size"
 #define PREF_KEY_MULTIPLIER_BASE @"Multiplier base"
@@ -90,6 +92,13 @@
 	[newfsTask launch];
 	[newfsTask waitUntilExit];
 	NSAssert1([newfsTask terminationStatus] == 0, @"newfs_hfs exited abnormally with status %u", [newfsTask terminationStatus]);
+
+	/*Turn off caching. This is a RAM disk; we don't need a cache.
+	 *This gains us 1–2 fps when recording in iShowU (settings: 1280×1024; uncompressed; 40 fps).
+	 *Also, it's OK if this fails. We don't *need* it to be uncached.
+	 */
+	if(!setHFSPlusVolumeAttributesWithDevicePath([deviceName fileSystemRepresentation], kHFSVolumeNoCacheRequiredMask, 0U))
+		NSLog(@"Warning: Couldn't set %@ as no-cache-required", deviceName);
 
 	//Mount it
 	NSTask *diskutilTask = [[[NSTask alloc] init] autorelease];
