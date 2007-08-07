@@ -69,6 +69,9 @@
 	unsigned long long bytes = volumeSize * multiplier;
 	unsigned sectors = (bytes / 512ULL);
 
+	//Used by log messages.
+	enum { OPEN_QUOTE = 0x201C, CLOSE_QUOTE = 0x201D };
+
 	//Create device
 	NSTask *hdidTask = [[[NSTask alloc] init] autorelease];
 	[hdidTask setLaunchPath:@"/usr/bin/hdid"];
@@ -83,7 +86,10 @@
 	NSString *deviceName = [[[[NSString alloc] initWithData:deviceNameData encoding:NSASCIIStringEncoding] autorelease] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
 	[hdidTask waitUntilExit];
-	NSAssert1([hdidTask terminationStatus] == 0, @"hdid exited abnormally with status %u", [hdidTask terminationStatus]);
+	if ([hdidTask terminationStatus] != 0) {
+		NSLog(@"hdid exited abnormally with status %u", [hdidTask terminationStatus]);
+		goto eject;
+	}
 
 	//Format it
 	NSTask *newfsTask = [[[NSTask alloc] init] autorelease];
@@ -91,22 +97,40 @@
 	[newfsTask setArguments:[NSArray arrayWithObjects:@"-v", volumeName, deviceName, nil]];
 	[newfsTask launch];
 	[newfsTask waitUntilExit];
-	NSAssert1([newfsTask terminationStatus] == 0, @"newfs_hfs exited abnormally with status %u", [newfsTask terminationStatus]);
+	if ([newfsTask terminationStatus] != 0) {
+		NSLog(@"newfs_hfs exited abnormally with status %u", [newfsTask terminationStatus]);
+		goto eject;
+	}
 
 	/*Turn off caching. This is a RAM disk; we don't need a cache.
 	 *This gains us 1–2 fps when recording in iShowU (settings: 1280×1024; uncompressed; 40 fps).
-	 *Also, it's OK if this fails. We don't *need* it to be uncached.
+	 *This isn't essential, but failure here may portend other bad signs, since this does read and write the volume header.
 	 */
-	if(!setHFSPlusVolumeAttributesWithDevicePath([deviceName fileSystemRepresentation], kHFSVolumeNoCacheRequiredMask, 0U))
-		NSLog(@"Warning: Couldn't set %@ as no-cache-required", deviceName);
+	if(!setHFSPlusVolumeAttributesWithDevicePath([deviceName fileSystemRepresentation], kHFSVolumeNoCacheRequiredMask, 0U)) {
+		NSLog(@"Couldn't set %@ as no-cache-required; bailing", deviceName);
+		goto eject;
+	}
 
-	//Mount it
 	NSTask *diskutilTask = [[[NSTask alloc] init] autorelease];
 	[diskutilTask setLaunchPath:@"/usr/sbin/diskutil"];
 	[diskutilTask setArguments:[NSArray arrayWithObjects:@"mount", deviceName, nil]];
 	[diskutilTask launch];
 	[diskutilTask waitUntilExit];
-	NSAssert1([diskutilTask terminationStatus] == 0, @"diskutil exited abnormally with status %u", [diskutilTask terminationStatus]);
+	if ([diskutilTask terminationStatus] != 0) {
+		NSLog(@"diskutil mount of device %C%@%C exited abnormally with status %u", OPEN_QUOTE, deviceName, CLOSE_QUOTE, [diskutilTask terminationStatus]);
+		goto eject;
+	}
+
+	//We're done! Everything after this point is error-handling.
+	return;
+
+eject:;
+	NSTask *diskutilEjectTask = [[[NSTask alloc] init] autorelease];
+	[diskutilEjectTask setLaunchPath:@"/usr/sbin/diskutil"];
+	[diskutilEjectTask setArguments:[NSArray arrayWithObjects:@"eject", deviceName, nil]];
+	[diskutilEjectTask launch];
+	[diskutilEjectTask waitUntilExit];
+	NSAssert4([diskutilEjectTask terminationStatus] == 0, @"diskutil eject of device %C%@%C exited abnormally with status %u", OPEN_QUOTE, deviceName, CLOSE_QUOTE, [diskutilEjectTask terminationStatus]);
 }
 
 #pragma mark Accessors
