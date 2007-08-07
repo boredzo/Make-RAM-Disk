@@ -22,8 +22,13 @@ bool setHFSPlusVolumeAttributesWithDevicePath(const char *pathToDevice, uint32_t
 	}
 
 	struct HFSPlusVolumeHeader header;
-	if (pread(fd, &header, sizeof(header), 1024) < 0) {
+	ssize_t amt = pread(fd, &header, sizeof(header), 1024);
+	if (amt < 0) {
 		fprintf(stderr, "%s: pread of %zu bytes failed: %s\n", __PRETTY_FUNCTION__, sizeof(header), strerror(errno));
+		return false;
+	}
+	if (amt != sizeof(header)) {
+		fprintf(stderr, "%s: pread of %zu bytes actually read %zi bytes, which is surprising\n", __PRETTY_FUNCTION__, sizeof(header), amt);
 		return false;
 	}
 
@@ -45,8 +50,13 @@ bool setHFSPlusVolumeAttributesWithDevicePath(const char *pathToDevice, uint32_t
 	header.lastMountedVersion = OSSwapHostToBigInt32('MKRD');
 
 	//Put our shiny new header back in the device.
-	if (pwrite(fd, &header, sizeof(header), 1024) < 0) {
+	amt = pwrite(fd, &header, sizeof(header), 1024);
+	if (amt < 0) {
 		fprintf(stderr, "%s: pwrite of %zu bytes failed: %s\n", __PRETTY_FUNCTION__, sizeof(header), strerror(errno));
+		return false;
+	}
+	if (amt != sizeof(header)) {
+		fprintf(stderr, "%s: pwrite of %zu bytes actually read %zi bytes, which is surprising\n", __PRETTY_FUNCTION__, sizeof(header), amt);
 		return false;
 	}
 
