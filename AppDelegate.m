@@ -187,7 +187,6 @@ eject:;
 	if (saveSettings) {
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-		NSLog(@"Volume size: %u", volumeSize);
 		[defaults setInteger:volumeSize forKey:PREF_KEY_VOLUME_SIZE];
 		[defaults setInteger:multiplierBase forKey:PREF_KEY_MULTIPLIER_BASE];
 		[defaults setInteger:multiplierPower forKey:PREF_KEY_MULTIPLIER_POWER];
