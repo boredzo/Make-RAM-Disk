@@ -47,7 +47,7 @@ bool setHFSPlusVolumeAttributesWithDevicePath(const char *pathToDevice, uint32_t
 	header.attributes  = OSSwapHostToBigInt32(header.attributes);
 
 	//Since we're modifying the volume header, we should sign our work. (TN1150 says so.)
-	header.lastMountedVersion = OSSwapHostToBigInt32('MKRD');
+	header.lastMountedVersion = OSSwapHostToBigInt32('MkRD');
 
 	//Put our shiny new header back in the device.
 	amt = pwrite(fd, &header, sizeof(header), 1024);
