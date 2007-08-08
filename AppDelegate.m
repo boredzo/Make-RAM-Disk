@@ -67,7 +67,7 @@
 - (void)mountRAMDisk:(out NSError **)outError {
 	unsigned long long multiplier = pow(multiplierBase, multiplierPower);
 	unsigned long long bytes = volumeSize * multiplier;
-	unsigned sectors = (bytes / 512ULL);
+	unsigned long long sectors = (bytes / 512ULL);
 
 	//Used by log messages.
 	enum { OPEN_QUOTE = 0x201C, CLOSE_QUOTE = 0x201D };
@@ -75,7 +75,7 @@
 	//Create device
 	NSTask *hdidTask = [[[NSTask alloc] init] autorelease];
 	[hdidTask setLaunchPath:@"/usr/bin/hdiutil"];
-	[hdidTask setArguments:[NSArray arrayWithObjects:@"attach", @"-nomount", [NSString stringWithFormat:@"ram://%u", sectors], nil]];
+	[hdidTask setArguments:[NSArray arrayWithObjects:@"attach", @"-nomount", [NSString stringWithFormat:@"ram://%llu", sectors], nil]];
 	NSPipe *hdidPipe = [NSPipe pipe];
 	[hdidTask setStandardOutput:hdidPipe];
 
