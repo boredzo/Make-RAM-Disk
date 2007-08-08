@@ -74,8 +74,8 @@
 
 	//Create device
 	NSTask *hdidTask = [[[NSTask alloc] init] autorelease];
-	[hdidTask setLaunchPath:@"/usr/bin/hdid"];
-	[hdidTask setArguments:[NSArray arrayWithObjects:@"-nomount", [NSString stringWithFormat:@"ram://%u", sectors], nil]];
+	[hdidTask setLaunchPath:@"/usr/bin/hdiutil"];
+	[hdidTask setArguments:[NSArray arrayWithObjects:@"attach", @"-nomount", [NSString stringWithFormat:@"ram://%u", sectors], nil]];
 	NSPipe *hdidPipe = [NSPipe pipe];
 	[hdidTask setStandardOutput:hdidPipe];
 
