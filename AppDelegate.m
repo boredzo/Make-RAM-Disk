@@ -73,21 +73,21 @@
 	enum { OPEN_QUOTE = 0x201C, CLOSE_QUOTE = 0x201D };
 
 	//Create device
-	NSTask *hdidTask = [[[NSTask alloc] init] autorelease];
-	[hdidTask setLaunchPath:@"/usr/bin/hdiutil"];
-	[hdidTask setArguments:[NSArray arrayWithObjects:@"attach", @"-nomount", [NSString stringWithFormat:@"ram://%llu", sectors], nil]];
-	NSPipe *hdidPipe = [NSPipe pipe];
-	[hdidTask setStandardOutput:hdidPipe];
+	NSTask *hdiutilTask = [[[NSTask alloc] init] autorelease];
+	[hdiutilTask setLaunchPath:@"/usr/bin/hdiutil"];
+	[hdiutilTask setArguments:[NSArray arrayWithObjects:@"attach", @"-nomount", [NSString stringWithFormat:@"ram://%llu", sectors], nil]];
+	NSPipe *hdiutilPipe = [NSPipe pipe];
+	[hdiutilTask setStandardOutput:hdiutilPipe];
 
 	//Slurp the device name from the hdid pipe
-	[hdidTask launch];
-	NSFileHandle *hdidFH = [hdidPipe fileHandleForReading];
-	NSData *deviceNameData = [hdidFH readDataToEndOfFile];
+	[hdiutilTask launch];
+	NSFileHandle *hdiutilFH = [hdiutilPipe fileHandleForReading];
+	NSData *deviceNameData = [hdiutilFH readDataToEndOfFile];
 	NSString *deviceName = [[[[NSString alloc] initWithData:deviceNameData encoding:NSASCIIStringEncoding] autorelease] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-	[hdidTask waitUntilExit];
-	if ([hdidTask terminationStatus] != 0) {
-		NSLog(@"hdid exited abnormally with status %u", [hdidTask terminationStatus]);
+	[hdiutilTask waitUntilExit];
+	if ([hdiutilTask terminationStatus] != 0) {
+		NSLog(@"hdiutil exited abnormally with status %u", [hdiutilTask terminationStatus]);
 		goto eject;
 	}
 
