@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3150C37A0C69EBE80017ADA7 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 3150C3780C69EBE80017ADA7 /* Credits.rtf */; };
 		3175A2090C6746F6009D1C45 /* SetVolumeAttributes.c in Sources */ = {isa = PBXBuildFile; fileRef = 3175A2080C6746F6009D1C45 /* SetVolumeAttributes.c */; };
 		31F5C6C20C15A0870020F3F2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F5C6C10C15A0870020F3F2 /* AppDelegate.m */; };
 		31F5C6FB0C15ADF60020F3F2 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31F5C6FA0C15ADF60020F3F2 /* Carbon.framework */; };
@@ -25,6 +26,7 @@
 		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		3150C3790C69EBE80017ADA7 /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
 		3175A2070C6746F6009D1C45 /* SetVolumeAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetVolumeAttributes.h; sourceTree = "<group>"; };
 		3175A2080C6746F6009D1C45 /* SetVolumeAttributes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SetVolumeAttributes.c; sourceTree = "<group>"; };
 		31F5C6C00C15A0870020F3F2 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3150C3780C69EBE80017ADA7 /* Credits.rtf */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
@@ -181,6 +184,7 @@
 			files = (
 				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				3150C37A0C69EBE80017ADA7 /* Credits.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,6 +219,14 @@
 				29B97319FDCFA39411CA2CEA /* English */,
 			);
 			name = MainMenu.nib;
+			sourceTree = "<group>";
+		};
+		3150C3780C69EBE80017ADA7 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3150C3790C69EBE80017ADA7 /* English */,
+			);
+			name = Credits.rtf;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
