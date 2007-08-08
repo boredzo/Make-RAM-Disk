@@ -59,7 +59,7 @@
 		//No option key, so go directly to mounting the RAM disk. I will save you the Monopoly joke.
 		NSError *error = nil;
 		[self mountRAMDisk:&error];
-#warning XXX Handle error
+		[NSApp presentError:error];
 		[NSApp terminate:nil];
 	}
 }
@@ -69,8 +69,7 @@
 	unsigned long long bytes = volumeSize * multiplier;
 	unsigned long long sectors = (bytes / 512ULL);
 
-	//Used by log messages.
-	enum { OPEN_QUOTE = 0x201C, CLOSE_QUOTE = 0x201D };
+	NSString *errorMessage = nil;
 
 	//Create device
 	NSTask *hdiutilTask = [[[NSTask alloc] init] autorelease];
@@ -87,7 +86,7 @@
 
 	[hdiutilTask waitUntilExit];
 	if ([hdiutilTask terminationStatus] != 0) {
-		NSLog(@"hdiutil exited abnormally with status %u", [hdiutilTask terminationStatus]);
+		errorMessage = [NSString stringWithFormat:NSLocalizedString(@"hdiutil exited abnormally with status %i", /*comment*/ nil), [hdiutilTask terminationStatus]];
 		goto eject;
 	}
 
@@ -98,7 +97,7 @@
 	[newfsTask launch];
 	[newfsTask waitUntilExit];
 	if ([newfsTask terminationStatus] != 0) {
-		NSLog(@"newfs_hfs exited abnormally with status %u", [newfsTask terminationStatus]);
+		errorMessage = [NSString stringWithFormat:NSLocalizedString(@"newfs_hfs exited abnormally with status %i", /*comment*/ nil), [newfsTask terminationStatus]];
 		goto eject;
 	}
 
@@ -107,7 +106,7 @@
 	 *This isn't essential, but failure here may portend other bad signs, since this does read and write the volume header.
 	 */
 	if(!setHFSPlusVolumeAttributesWithDevicePath([deviceName fileSystemRepresentation], kHFSVolumeNoCacheRequiredMask, 0U)) {
-		NSLog(@"Couldn't set %@ as no-cache-required; bailing", deviceName);
+		errorMessage = [NSString stringWithFormat:NSLocalizedString(@"Couldn't set %@ as no-cache-required; bailing", /*comment*/ nil), deviceName];
 		goto eject;
 	}
 
@@ -117,20 +116,29 @@
 	[diskutilTask launch];
 	[diskutilTask waitUntilExit];
 	if ([diskutilTask terminationStatus] != 0) {
-		NSLog(@"diskutil mount of device %C%@%C exited abnormally with status %u", OPEN_QUOTE, deviceName, CLOSE_QUOTE, [diskutilTask terminationStatus]);
+		errorMessage = [NSString stringWithFormat:NSLocalizedString(@"diskutil mount of device \"%@\" exited abnormally with status %i", /*comment*/ nil), deviceName, [diskutilTask terminationStatus]];
 		goto eject;
 	}
 
 	//We're done! Everything after this point is error-handling.
 	return;
 
-eject:;
+eject:
+	//First return our error, if we have one and can return it.
+	if (errorMessage && outError) {
+		NSDictionary *errorDict = [NSDictionary dictionaryWithObjectsAndKeys:
+			[NSString stringWithFormat:NSLocalizedString(@"Could not create RAM disk \"%@\"", /*comment*/ nil), volumeName], NSLocalizedDescriptionKey,
+			[NSString stringWithFormat:NSLocalizedString(@"Reason: %@", /*comment*/ nil), errorMessage], NSLocalizedRecoverySuggestionErrorKey,
+			nil];
+		NSError *error = [NSError errorWithDomain:@"Make RAM Disk domain" code:1 userInfo:errorDict];
+		*outError = error;
+	}
 	NSTask *diskutilEjectTask = [[[NSTask alloc] init] autorelease];
 	[diskutilEjectTask setLaunchPath:@"/usr/sbin/diskutil"];
 	[diskutilEjectTask setArguments:[NSArray arrayWithObjects:@"eject", deviceName, nil]];
 	[diskutilEjectTask launch];
 	[diskutilEjectTask waitUntilExit];
-	NSAssert4([diskutilEjectTask terminationStatus] == 0, @"diskutil eject of device %C%@%C exited abnormally with status %u", OPEN_QUOTE, deviceName, CLOSE_QUOTE, [diskutilEjectTask terminationStatus]);
+	NSAssert2([diskutilEjectTask terminationStatus] == 0, @"diskutil eject of device \"%@\" exited abnormally with status %i", deviceName, [diskutilEjectTask terminationStatus]);
 }
 
 #pragma mark Accessors
@@ -197,7 +205,7 @@ eject:;
 
 	NSError *error = nil;
 	[self mountRAMDisk:&error];
-#warning XXX Handle error
+	[NSApp presentError:error];
 	[NSApp terminate:nil];
 }
 
