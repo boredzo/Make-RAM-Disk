@@ -59,7 +59,7 @@
 		//No option key, so go directly to mounting the RAM disk. I will save you the Monopoly joke.
 		NSError *error = nil;
 		[self mountRAMDisk:&error];
-		[NSApp presentError:error];
+		if(error) [NSApp presentError:error];
 		[NSApp terminate:nil];
 	}
 }
@@ -205,7 +205,7 @@ eject:
 
 	NSError *error = nil;
 	[self mountRAMDisk:&error];
-	[NSApp presentError:error];
+	if(error) [NSApp presentError:error];
 	[NSApp terminate:nil];
 }
 
