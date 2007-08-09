@@ -1,7 +1,7 @@
 {
     IBClasses = (
         {
-            ACTIONS = {endSettingsWindow = id; takeMultiplierFrom = id; }; 
+            ACTIONS = {makeRAMDisk = id; quitWithoutMakingRAMDisk = id; takeMultiplierFrom = id; }; 
             CLASS = AppDelegate; 
             LANGUAGE = ObjC; 
             OUTLETS = {multiplierPopup = NSPopUpButton; settingsWindow = NSWindow; }; 

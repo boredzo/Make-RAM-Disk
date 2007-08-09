@@ -189,23 +189,46 @@ eject:
 	saveSettings = flag;
 }
 
+#pragma mark Saving settings
+
+- (void)saveSettingsToDefaults {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+	[defaults setObject:[NSNumber numberWithDouble:volumeSize] forKey:PREF_KEY_VOLUME_SIZE];
+	[defaults setInteger:multiplierBase forKey:PREF_KEY_MULTIPLIER_BASE];
+	[defaults setInteger:multiplierPower forKey:PREF_KEY_MULTIPLIER_POWER];
+	[defaults setObject:volumeName forKey:PREF_KEY_VOLUME_NAME];
+
+	[defaults synchronize];
+}
 #pragma mark Actions
 
-- (IBAction)endSettingsWindow:sender {
+- (IBAction)quitWithoutMakingRAMDisk:sender {
 	if (saveSettings) {
-		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		//Make sure that we have the value in the field, in order to not require that the user tab out of it before accepting the value.
+		NSWindow *window = [NSApp keyWindow];
+		NSResponder *resp = [window firstResponder];
+		[window endEditingFor:resp];
 
-		[defaults setObject:[NSNumber numberWithDouble:volumeSize] forKey:PREF_KEY_VOLUME_SIZE];
-		[defaults setInteger:multiplierBase forKey:PREF_KEY_MULTIPLIER_BASE];
-		[defaults setInteger:multiplierPower forKey:PREF_KEY_MULTIPLIER_POWER];
-		[defaults setObject:volumeName forKey:PREF_KEY_VOLUME_NAME];
+		[self saveSettingsToDefaults];
+	}
 
-		[defaults synchronize];
+	[NSApp terminate:nil];
+}
+- (IBAction)makeRAMDisk:sender {
+	if (saveSettings) {
+		//Make sure that we have the value in the field, in order to not require that the user tab out of it before accepting the value.
+		NSWindow *window = [NSApp keyWindow];
+		NSResponder *resp = [window firstResponder];
+		[window endEditingFor:resp];
+
+		[self saveSettingsToDefaults];
 	}
 
 	NSError *error = nil;
 	[self mountRAMDisk:&error];
 	if(error) [NSApp presentError:error];
+
 	[NSApp terminate:nil];
 }
 

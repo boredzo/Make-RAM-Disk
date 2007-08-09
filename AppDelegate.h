@@ -40,6 +40,7 @@
 
 #pragma mark Actions
 
-- (IBAction)endSettingsWindow:sender;
+- (IBAction)quitWithoutMakingRAMDisk:sender;
+- (IBAction)makeRAMDisk:sender;
 
 @end
