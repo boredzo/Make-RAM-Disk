@@ -20,7 +20,7 @@
 - init {
 	if((self = [super init])) {
 		[self setVolumeName:NSLocalizedString(@"RAM Disk", /*comment*/ nil)];
-		[self setVolumeSize:64U];
+		[self setVolumeSize:64.0];
 		[self setMultiplierBase:2U];
 		[self setMultiplierPower:20U]; //2 ** 20 == MiB
 		[self setSaveSettings:YES];
@@ -30,14 +30,14 @@
 		//Register the defaults with the values set up in -init.
 		[defaults registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
 			volumeName, PREF_KEY_VOLUME_NAME,
-			[NSNumber numberWithUnsignedInt:volumeSize], PREF_KEY_VOLUME_SIZE,
+			[NSNumber numberWithDouble:volumeSize], PREF_KEY_VOLUME_SIZE,
 			[NSNumber numberWithUnsignedShort:multiplierBase], PREF_KEY_MULTIPLIER_BASE,
 			[NSNumber numberWithUnsignedShort:multiplierPower], PREF_KEY_MULTIPLIER_POWER,
 			nil]];
 
 		//Now that we've registered our defaults, get the current values (in case the user had saved settings before).
 		[self setVolumeName:[defaults stringForKey:PREF_KEY_VOLUME_NAME]];
-		[self setVolumeSize:[[defaults objectForKey:PREF_KEY_VOLUME_SIZE] unsignedIntValue]];
+		[self setVolumeSize:[[defaults objectForKey:PREF_KEY_VOLUME_SIZE] doubleValue]];
 		[self setMultiplierBase:[[defaults objectForKey:PREF_KEY_MULTIPLIER_BASE] unsignedIntValue]];
 		[self setMultiplierPower:[[defaults objectForKey:PREF_KEY_MULTIPLIER_POWER] unsignedIntValue]];
 	}
@@ -143,10 +143,10 @@ eject:
 
 #pragma mark Accessors
 
-- (unsigned) volumeSize {
+- (double) volumeSize {
 	return volumeSize;
 }
-- (void) setVolumeSize:(unsigned)newVolumeSize {
+- (void) setVolumeSize:(double)newVolumeSize {
 	volumeSize = newVolumeSize;
 }
 
@@ -195,7 +195,7 @@ eject:
 	if (saveSettings) {
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-		[defaults setInteger:volumeSize forKey:PREF_KEY_VOLUME_SIZE];
+		[defaults setObject:[NSNumber numberWithDouble:volumeSize] forKey:PREF_KEY_VOLUME_SIZE];
 		[defaults setInteger:multiplierBase forKey:PREF_KEY_MULTIPLIER_BASE];
 		[defaults setInteger:multiplierPower forKey:PREF_KEY_MULTIPLIER_POWER];
 		[defaults setObject:volumeName forKey:PREF_KEY_VOLUME_NAME];

@@ -11,7 +11,7 @@
 	IBOutlet NSWindow *settingsWindow;
 	IBOutlet NSPopUpButton *multiplierPopup;
 
-	unsigned volumeSize;
+	double volumeSize;
 	unsigned short multiplierBase, multiplierPower;
 	NSString *volumeName;
 	BOOL saveSettings;
@@ -21,8 +21,8 @@
 
 #pragma mark Accessors
 
-- (unsigned) volumeSize;
-- (void) setVolumeSize:(unsigned)newVolumeSize;
+- (double) volumeSize;
+- (void) setVolumeSize:(double)newVolumeSize;
 
 - (unsigned short) multiplierBase;
 - (void) setMultiplierBase:(unsigned short)newMultiplierBase;
