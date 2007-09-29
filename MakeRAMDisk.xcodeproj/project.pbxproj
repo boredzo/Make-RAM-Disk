@@ -38,7 +38,7 @@
 		31F5C96F0C15BD440020F3F2 /* NSString+unsignedInt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+unsignedInt.m"; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* MakeRAMDisk_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MakeRAMDisk_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		8D1107320486CEB800E47090 /* MakeRAMDisk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MakeRAMDisk.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D1107320486CEB800E47090 /* Make RAM Disk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Make RAM Disk.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,7 +87,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107320486CEB800E47090 /* MakeRAMDisk.app */,
+				8D1107320486CEB800E47090 /* Make RAM Disk.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -162,7 +162,7 @@
 			name = "Make RAM Disk";
 			productInstallPath = "$(HOME)/Applications";
 			productName = MakeRAMDisk;
-			productReference = 8D1107320486CEB800E47090 /* MakeRAMDisk.app */;
+			productReference = 8D1107320486CEB800E47090 /* Make RAM Disk.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -248,7 +248,7 @@
 				GCC_PREFIX_HEADER = MakeRAMDisk_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				PRODUCT_NAME = MakeRAMDisk;
+				PRODUCT_NAME = "Make RAM Disk";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
@@ -267,7 +267,7 @@
 				GCC_PREFIX_HEADER = MakeRAMDisk_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				PRODUCT_NAME = MakeRAMDisk;
+				PRODUCT_NAME = "Make RAM Disk";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
