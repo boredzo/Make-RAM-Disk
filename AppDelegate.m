@@ -58,13 +58,14 @@
 	} else {
 		//No option key, so go directly to mounting the RAM disk. I will save you the Monopoly joke.
 		NSError *error = nil;
-		[self mountRAMDisk:&error];
-		if(error) [NSApp presentError:error];
+		bool success = [self mountRAMDisk:&error];
+		if ((!success) && (error != nil)) [NSApp presentError:error];
 		[NSApp terminate:nil];
 	}
 }
 
-- (void)mountRAMDisk:(out NSError **)outError {
+- (bool)mountRAMDisk:(out NSError **)outError {
+	bool whetherSucceeded = true;
 	unsigned long long multiplier = pow(multiplierBase, multiplierPower);
 	unsigned long long bytes = volumeSize * multiplier;
 	unsigned long long sectors = (bytes / 512ULL);
@@ -121,7 +122,7 @@
 	}
 
 	//We're done! Everything after this point is error-handling.
-	return;
+	return whetherSucceeded;
 
 eject:
 	//First return our error, if we have one and can return it.
@@ -132,6 +133,7 @@ eject:
 			nil];
 		NSError *error = [NSError errorWithDomain:@"Make RAM Disk domain" code:1 userInfo:errorDict];
 		*outError = error;
+		whetherSucceeded = false;
 	}
 	NSTask *diskutilEjectTask = [[[NSTask alloc] init] autorelease];
 	[diskutilEjectTask setLaunchPath:@"/usr/sbin/diskutil"];
@@ -139,6 +141,8 @@ eject:
 	[diskutilEjectTask launch];
 	[diskutilEjectTask waitUntilExit];
 	NSAssert2([diskutilEjectTask terminationStatus] == 0, @"diskutil eject of device \"%@\" exited abnormally with status %i", deviceName, [diskutilEjectTask terminationStatus]);
+
+	return whetherSucceeded;
 }
 
 #pragma mark Accessors
@@ -165,7 +169,7 @@ eject:
 }
 
 - (IBAction) takeMultiplierFrom:sender {
-	unsigned multiplierPacked = [[sender selectedItem] tag];
+	unsigned multiplierPacked = [[sender selectedItem] tag] & 0xFFFFffff;
 	unsigned short newBase = multiplierPacked >> 16U;
 	unsigned short newPower = multiplierPacked & 0xFFFF;
 	[self setMultiplierBase:newBase];
@@ -226,8 +230,8 @@ eject:
 	}
 
 	NSError *error = nil;
-	[self mountRAMDisk:&error];
-	if(error) [NSApp presentError:error];
+	bool success = [self mountRAMDisk:&error];
+	if ((!success) && (error != nil)) [NSApp presentError:error];
 
 	[NSApp terminate:nil];
 }

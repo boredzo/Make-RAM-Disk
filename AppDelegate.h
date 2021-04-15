@@ -17,7 +17,7 @@
 	BOOL saveSettings;
 }
 
-- (void)mountRAMDisk:(out NSError **)outError;
+- (bool)mountRAMDisk:(out NSError **)outError;
 
 #pragma mark Accessors
 
