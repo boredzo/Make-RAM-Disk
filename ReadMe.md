@@ -37,8 +37,14 @@ Remember: the Option key for the Options window.
 ### Can I change the options without actually creating a RAM disk?
 Yes. As long as the box is checked, the options will be saved, whether you create a RAM disk or not.
 
-### Can I change the size or name of an existing RAM disk?
+### Can I change the size an existing RAM disk?
 No.
+
+### Can I rename an existing RAM disk?
+
+Yes, you can get info on it in the Finder and change its name there.
+
+If you have anything referencing the RAM disk by pathname (e.g., `/Volumes/RAM Disk/…`), you'll need to tell it the new pathname, as the old pathname will no longer work.
 
 ### Can I have a custom icon on the RAM disk?
 (or)
