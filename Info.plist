@@ -24,6 +24,8 @@
 	<string>MkRD</string>
 	<key>CFBundleVersion</key>
 	<string>3</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.utilities</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
